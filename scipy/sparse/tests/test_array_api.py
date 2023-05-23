@@ -478,3 +478,33 @@ def test_blocks_default_construction_fn_matrices():
     # bmat
     m = scipy.sparse.bmat([[A, None], [None, C]])
     assert not m._is_array
+
+
+def test_issparse():
+    m = scipy.sparse.eye(3)
+    a = scipy.sparse.csr_array(m)
+    assert not m._is_array
+    assert a._is_array
+
+    # Both sparse arrays and sparse matrices should be sparse
+    assert scipy.sparse.issparse(a)
+    assert scipy.sparse.issparse(m)
+
+    # ndarray and array_likes are not sparse
+    assert not scipy.sparse.issparse(a.todense())
+    assert not scipy.sparse.issparse(m.todense())
+
+
+def test_isspmatrix():
+    m = scipy.sparse.eye(3)
+    a = scipy.sparse.csr_array(m)
+    assert not m._is_array
+    assert a._is_array
+
+    # Should only be true for sparse matrices, not sparse arrays
+    assert not scipy.sparse.isspmatrix(a)
+    assert scipy.sparse.isspmatrix(m)
+
+    # ndarray and array_likes are not sparse
+    assert not scipy.sparse.isspmatrix(a.todense())
+    assert not scipy.sparse.isspmatrix(m.todense())
