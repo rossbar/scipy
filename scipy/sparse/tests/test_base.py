@@ -33,7 +33,7 @@ import scipy.linalg
 import scipy.sparse as sparse
 from scipy.sparse import (csc_matrix, csr_matrix, dok_matrix,
         coo_matrix, lil_matrix, dia_matrix, bsr_matrix,
-        eye, isspmatrix, SparseEfficiencyWarning)
+        eye, issparse, SparseEfficiencyWarning)
 from scipy.sparse._sputils import (supported_dtypes, isscalarlike,
                                    get_index_dtype, asmatrix, matrix)
 from scipy.sparse.linalg import splu, expm, inv
@@ -1524,7 +1524,7 @@ class _TestCommon:
                     assert_raises(ValueError, i.multiply, j)
                     continue
                 sp_mult = i.multiply(j)
-                if isspmatrix(sp_mult):
+                if issparse(sp_mult):
                     assert_almost_equal(sp_mult.toarray(), dense_mult)
                 else:
                     assert_almost_equal(sp_mult, dense_mult)
@@ -1592,7 +1592,7 @@ class _TestCommon:
         # test that A*x works for x with shape () (1,) (1,1) and (1,0)
         A = self.spmatrix([[1],[2],[3]])
 
-        assert_(isspmatrix(A * array(1)))
+        assert_(issparse(A * array(1)))
         assert_equal((A * array(1)).toarray(), [[1], [2], [3]])
         assert_equal(A * array([1]), array([1, 2, 3]))
         assert_equal(A * array([[1]]), array([[1], [2], [3]]))
@@ -2860,7 +2860,7 @@ class _TestFancyIndexing:
         S = self.spmatrix(D)
 
         SIJ = S[I,J]
-        if isspmatrix(SIJ):
+        if issparse(SIJ):
             SIJ = SIJ.toarray()
         assert_equal(SIJ, D[I,J])
 
@@ -3108,7 +3108,7 @@ class _TestFancyMultidim:
             S = self.spmatrix(D)
 
             SIJ = S[I,J]
-            if isspmatrix(SIJ):
+            if issparse(SIJ):
                 SIJ = SIJ.toarray()
             assert_equal(SIJ, D[I,J])
 
@@ -3766,7 +3766,7 @@ class TestCSR(sparse_test_class()):
         S = self.spmatrix(D)
 
         SIJ = S[I,J]
-        if isspmatrix(SIJ):
+        if issparse(SIJ):
             SIJ = SIJ.toarray()
         assert_equal(SIJ, D[I,J])
 
@@ -3979,7 +3979,7 @@ class TestCSC(sparse_test_class()):
         S = self.spmatrix(D)
 
         SIJ = S[I,J]
-        if isspmatrix(SIJ):
+        if issparse(SIJ):
             SIJ = SIJ.toarray()
         assert_equal(SIJ, D[I,J])
 
